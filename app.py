@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from pymongo import MongoClient
+import os
 app = Flask(__name__)
 # MongoDB connection
 client = MongoClient("mongodb://localhost:27017/")
@@ -20,4 +21,4 @@ def get_colleges():
     colleges = list(colleges_collection.find({}, {"_id": 0}))  # Exclude the MongoDB `_id` field
     return jsonify(colleges)
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
