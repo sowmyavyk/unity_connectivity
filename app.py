@@ -3,9 +3,12 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 
+load_dotenv()  # Load environment variables from .env
+
 app = Flask(__name__)
+
 # Get API_KEY from environment variable
-API_KEY = "1d67bad29c76451bf695248c9db0ae15e8d4226835287bbe2532e20600de3eb8"
+API_KEY = os.getenv("API_KEY")
 
 # MongoDB connection
 client = MongoClient("mongodb://localhost:27017/")
@@ -25,7 +28,7 @@ def get_colleges():
     auth_error = check_api_key()
     if auth_error:
         return auth_error
-    
+
     # Fetch colleges from MongoDB
     colleges = list(colleges_collection.find({}, {"_id": 0}))  # Exclude MongoDB _id field
     return jsonify(colleges)
